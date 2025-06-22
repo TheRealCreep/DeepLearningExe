@@ -42,6 +42,10 @@ class FullyConnected(BaseLayer):
             self.weights = self.optimizer.calculate_update(self.weights, self.gradient_weights)
         return gradient
 
-#a = np.array([[1, 2], [2, 3], [1, 3]])
-#b = np.array([[1, 0], [0, 1]])
-#print(np.append(a, np.ones((3, 1)), axis=1))
+    def initialize(self, weights_initializer, bias_initializer):
+        fan_in = self.input_size
+        fan_out = self.output_size
+        weights = weights_initializer.initialize((self.input_size, self.output_size), fan_in, fan_out)
+        bias = bias_initializer.initialize((1, self.output_size), fan_in, fan_out)
+
+        self.weights = np.vstack([weights, bias])
